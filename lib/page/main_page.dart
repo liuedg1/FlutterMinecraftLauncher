@@ -15,34 +15,31 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  //List of pages
-  final List<Widget> _pages = [
-    LaunchPage(),
-    VersionsPage(),
-    DownloadPage(),
-    SettingsPage(),
-  ];
-
-  //List of NavigationRailDestination
-  final List<NavigationRailDestination> _navigationDestinations = [
-    const NavigationRailDestination(
+  //List of NavigationRailItems
+  final List<NavigationRailItem> _navigationRailItems = [
+    const NavigationRailItem(
+        page: LaunchPage(), destination: NavigationRailDestination(
       icon: Icon(Icons.rocket_launch),
       label: Text('Launch'),
-    ),
-    const NavigationRailDestination(
+    )),
+
+    const NavigationRailItem(
+        page: VersionsPage(), destination: NavigationRailDestination(
       icon: Icon(Icons.gamepad),
       label: Text('Versions'),
-    ),
-    const NavigationRailDestination(
+    )),
+    const NavigationRailItem(
+        page: DownloadPage(), destination: NavigationRailDestination(
       selectedIcon: Icon(Icons.download),
       icon: Icon(Icons.download),
       label: Text('Download'),
-    ),
-    const NavigationRailDestination(
+    )),
+    const NavigationRailItem(
+        page: SettingsPage(), destination: NavigationRailDestination(
       selectedIcon: Icon(Icons.settings),
       icon: Icon(Icons.settings),
       label: Text('Settings'),
-    ),
+    )),
   ];
 
   @override
@@ -52,10 +49,13 @@ class _HomePageState extends State<HomePage> {
         children: [
           //Main NavigationRail
           NavigationRail(
-            destinations: _navigationDestinations,
+            destinations: _navigationRailItems.map((item) => item.destination).toList(),
             selectedIndex: _selectedIndex,
             labelType: NavigationRailLabelType.all,
-            backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+            backgroundColor: Theme
+                .of(context)
+                .colorScheme
+                .surfaceContainer,
             onDestinationSelected: (index) {
               setState(() {
                 _selectedIndex = index;
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: IndexedStack(
               index: _selectedIndex,
-              children: _pages,
+              children: _navigationRailItems.map((item) => item.page).toList(),
             ),
           )
         ],
@@ -75,4 +75,11 @@ class _HomePageState extends State<HomePage> {
 
     );
   }
+}
+
+class NavigationRailItem {
+  final Widget page;
+  final NavigationRailDestination destination;
+
+  const NavigationRailItem({required this.page, required this.destination});
 }
