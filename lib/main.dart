@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_minecraft_launcher/page/main_page.dart';
 
 void main() => runApp(const FMCLBaseApp());
 
@@ -17,44 +18,7 @@ class FMCLBaseApp extends StatelessWidget {
         fontFamily: 'Noto Sans SC', // Use NotoSans
       ),
 
-      home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Flutter Minecraft Launcher'),
-      ),
-
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-                '测试文本;Test Text',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600
-              ),
-            ),
-          ],
-        ),
-      ),
-
+      home: HomePage(),
     );
   }
 }
