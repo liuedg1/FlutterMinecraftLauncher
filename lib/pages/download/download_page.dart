@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
-import 'package:flutter_minecraft_launcher/page/download/download_page_minecraft.dart';
-import 'package:flutter_minecraft_launcher/page/download/download_page_mod.dart';
+import 'package:flutter_minecraft_launcher/pages/download/download_page_minecraft.dart';
+import 'package:flutter_minecraft_launcher/pages/download/download_page_mod.dart';
 
 import 'download_page_modpack.dart';
 
