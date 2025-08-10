@@ -3,7 +3,7 @@ import 'package:flutter_minecraft_launcher/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../notifiers/theme_notifier.dart';
-import 'download_page.dart';
+import 'download/download_page.dart';
 import 'launch_page.dart';
 import 'settings_page.dart';
 import 'versions_page.dart';
