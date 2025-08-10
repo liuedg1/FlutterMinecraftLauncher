@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../models/navigation_item.dart';
 import '../notifiers/theme_notifier.dart';
 import 'download/download_page.dart';
 import 'launch_page.dart';
@@ -120,11 +121,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-class NavigationRailItem {
-  final Widget page;
-  final NavigationRailDestination destination;
-
-  const NavigationRailItem({required this.page, required this.destination});
 }

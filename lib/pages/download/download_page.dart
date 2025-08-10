@@ -3,6 +3,7 @@ import 'package:flutter_minecraft_launcher/constants.dart';
 import 'package:flutter_minecraft_launcher/pages/download/download_page_minecraft.dart';
 import 'package:flutter_minecraft_launcher/pages/download/download_page_mod.dart';
 
+import '../../models/navigation_item.dart';
 import 'download_page_modpack.dart';
 
 class DownloadPage extends StatefulWidget {
@@ -15,10 +16,28 @@ class DownloadPage extends StatefulWidget {
 class _DownloadPageState extends State<DownloadPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _downloadChildrenPages = [
-    const DownloadPageMinecraft(),
-    const DownloadPageMod(),
-    const DownloadPageModpack(),
+  final List<NavigationDrawerItem> _downloadPageSubItems = [
+    const NavigationDrawerItem(
+      page: DownloadPageMinecraft(),
+      destination: NavigationDrawerDestination(
+        icon: Icon(Icons.code),
+        label: Text('Minecraft'),
+      ),
+    ),
+    const NavigationDrawerItem(
+      page: DownloadPageMod(),
+      destination: NavigationDrawerDestination(
+        icon: Icon(Icons.extension),
+        label: Text('Mods'),
+      ),
+    ),
+    const NavigationDrawerItem(
+      page: DownloadPageModpack(),
+      destination: NavigationDrawerDestination(
+        icon: Icon(Icons.backpack),
+        label: Text('Modpacks'),
+      ),
+    ),
   ];
 
   @override
@@ -57,18 +76,7 @@ class _DownloadPageState extends State<DownloadPage> {
               ),
 
               //Destinations
-              NavigationDrawerDestination(
-                icon: const Icon(Icons.code),
-                label: Text('Minecraft'),
-              ),
-              NavigationDrawerDestination(
-                icon: const Icon(Icons.extension),
-                label: Text('Mods'),
-              ),
-              NavigationDrawerDestination(
-                icon: const Icon(Icons.backpack),
-                label: Text('Modpacks'),
-              ),
+              for (var item in _downloadPageSubItems) item.destination,
             ],
           ),
         ),
@@ -77,7 +85,7 @@ class _DownloadPageState extends State<DownloadPage> {
         Expanded(
           child: IndexedStack(
             index: _selectedIndex,
-            children: _downloadChildrenPages,
+            children: _downloadPageSubItems.map((item) => item.page).toList(),
           ),
         ),
       ],
