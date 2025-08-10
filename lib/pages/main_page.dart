@@ -97,6 +97,7 @@ class _HomePageState extends State<HomePage> {
                     ),
 
                     child: Icon(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       size: 24,
                       //Get theme from Notifier
                       context.watch<ThemeNotifier>().getThemeMode ==
