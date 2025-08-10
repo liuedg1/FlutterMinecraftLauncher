@@ -29,8 +29,11 @@ class _LaunchPageState extends State<LaunchPage> {
             children: [
               const SizedBox(width: kDefaultPadding),
 
-              const Expanded(
-                child: Text(kAppNameAbb, style: TextStyle(fontSize: 28)),
+              Expanded(
+                child: Text(
+                  kAppNameAbb,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
               ),
             ],
           ),
