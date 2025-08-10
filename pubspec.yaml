@@ -17,8 +17,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-
+  window_manager: ^0.5.1
   cupertino_icons: ^1.0.8
+  package_info_plus: ^8.3.0
+  get_it: ^8.2.0
 
 dev_dependencies:
   flutter_test:

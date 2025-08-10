@@ -18,28 +18,32 @@ class _HomePageState extends State<HomePage> {
   //List of NavigationRailItems
   final List<NavigationRailItem> _navigationRailItems = [
     const NavigationRailItem(
-        page: LaunchPage(), destination: NavigationRailDestination(
-      icon: Icon(Icons.rocket_launch),
-      label: Text('Launch'),
-    )),
+        page: LaunchPage(),
+        destination: NavigationRailDestination(
+          icon: Icon(Icons.rocket_launch),
+          label: Text('Launch'),
+        )),
 
     const NavigationRailItem(
-        page: VersionsPage(), destination: NavigationRailDestination(
-      icon: Icon(Icons.gamepad),
-      label: Text('Versions'),
-    )),
+        page: VersionsPage(),
+        destination: NavigationRailDestination(
+          icon: Icon(Icons.gamepad),
+          label: Text('Versions'),
+        )),
     const NavigationRailItem(
-        page: DownloadPage(), destination: NavigationRailDestination(
-      selectedIcon: Icon(Icons.download),
-      icon: Icon(Icons.download),
-      label: Text('Download'),
-    )),
+        page: DownloadPage(),
+        destination: NavigationRailDestination(
+          selectedIcon: Icon(Icons.download),
+          icon: Icon(Icons.download),
+          label: Text('Download'),
+        )),
     const NavigationRailItem(
-        page: SettingsPage(), destination: NavigationRailDestination(
-      selectedIcon: Icon(Icons.settings),
-      icon: Icon(Icons.settings),
-      label: Text('Settings'),
-    )),
+        page: SettingsPage(),
+        destination: NavigationRailDestination(
+          selectedIcon: Icon(Icons.settings),
+          icon: Icon(Icons.settings),
+          label: Text('Settings'),
+        )),
   ];
 
   @override
@@ -49,7 +53,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           //Main NavigationRail
           NavigationRail(
-            destinations: _navigationRailItems.map((item) => item.destination).toList(),
+            destinations: _navigationRailItems
+                .map((item) => item.destination)
+                .toList(),
             selectedIndex: _selectedIndex,
             labelType: NavigationRailLabelType.all,
             backgroundColor: Theme

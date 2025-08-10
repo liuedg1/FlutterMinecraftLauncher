@@ -1,8 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_minecraft_launcher/constants.dart';
 import 'package:flutter_minecraft_launcher/page/main_page.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() => runApp(const FMCLBaseApp());
+import 'core/service_locator.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+  await initializeLocator();
+
+  final info = getIt<PackageInfo>();
+
+  WindowOptions windowOptions = WindowOptions(
+    size: Size(1100, 700),
+    minimumSize: Size(800, 600),
+
+    //e.g. Flutter Minecraft Launcher 1.0.0+1
+    title: '$kAppName ${info.version}+${info.buildNumber}',
+    titleBarStyle: TitleBarStyle.normal,
+    center: true,
+  );
+
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
+
+  runApp(const FMCLBaseApp());
+}
 
 class FMCLBaseApp extends StatelessWidget {
   const FMCLBaseApp({super.key});
@@ -10,7 +37,7 @@ class FMCLBaseApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Minecraft Launcher',
+      title: kAppName,
 
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
