@@ -20,12 +20,19 @@ class _LaunchPageState extends State<LaunchPage> {
         icon: const Icon(Icons.rocket_launch),
       ),
 
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+      body: Column(
         children: [
-          const SizedBox(width: kDefaultPadding / 2),
-          const Expanded(
-            child: Text(kAppNameAbb, style: TextStyle(fontSize: 28)),
+          const SizedBox(height: kDefaultPadding / 3),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(width: kDefaultPadding),
+
+              const Expanded(
+                child: Text(kAppNameAbb, style: TextStyle(fontSize: 28)),
+              ),
+            ],
           ),
         ],
       ),
