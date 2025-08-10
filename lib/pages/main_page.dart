@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../notifiers/theme_notifier.dart';
 import 'download/download_page.dart';
 import 'launch_page.dart';
-import 'settings_page.dart';
+import 'settings/settings_page.dart';
 import 'versions_page.dart';
 
 class HomePage extends StatefulWidget {
