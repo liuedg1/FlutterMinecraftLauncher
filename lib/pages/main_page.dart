@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
-import 'package:provider/provider.dart';
 
 import '../models/navigation_item.dart';
-import '../notifiers/theme_notifier.dart';
 import 'download/download_page.dart';
 import 'launch_page.dart';
 import 'settings/settings_page.dart';
@@ -75,40 +73,6 @@ class _HomePageState extends State<HomePage> {
                 _selectedIndex = index;
               });
             },
-
-            trailing: Expanded(
-              child: Align(
-                //Make button at bottom
-                alignment: Alignment.bottomCenter,
-
-                //Add padding on the bottom
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: kDefaultPadding),
-                  child: OutlinedButton(
-                    //Toggle current theme on pressed
-                    onPressed: () {
-                      context.read<ThemeNotifier>().toggleTheme();
-                    },
-
-                    //Rounded outlined
-                    style: OutlinedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(20),
-                    ),
-
-                    child: Icon(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      size: 24,
-                      //Get theme from Notifier
-                      context.watch<ThemeNotifier>().getThemeMode ==
-                              ThemeMode.light
-                          ? Icons.dark_mode
-                          : Icons.light_mode,
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ),
 
           //Display current page
