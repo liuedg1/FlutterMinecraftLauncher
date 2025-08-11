@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
+import 'package:flutter_minecraft_launcher/notifiers/settings_notifier.dart';
 import 'package:flutter_minecraft_launcher/pages/main_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -32,8 +33,11 @@ void main() async {
   });
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeNotifier(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ThemeNotifier()),
+        ChangeNotifierProvider(create: (context) => SettingsNotifier()),
+      ],
       child: const FMCLBaseApp(),
     ),
   );
