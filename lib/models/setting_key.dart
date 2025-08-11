@@ -1,2 +1,2 @@
 ///All settings
-enum SettingKey { language, darkMode, test }
+enum SettingKey { language, themeMode }

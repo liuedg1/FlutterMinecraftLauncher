@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
+import 'package:flutter_minecraft_launcher/models/setting_key.dart';
 import 'package:flutter_minecraft_launcher/notifiers/settings_notifier.dart';
 import 'package:flutter_minecraft_launcher/pages/main_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -8,7 +9,6 @@ import 'package:window_manager/window_manager.dart';
 
 import 'common/global.dart';
 import 'core/service_locator.dart';
-import 'notifiers/theme_notifier.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +35,6 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ThemeNotifier()),
         ChangeNotifierProvider(create: (context) => SettingsNotifier()),
       ],
       child: const FMCLBaseApp(),
@@ -48,14 +47,14 @@ class FMCLBaseApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeNotifier = context.watch<ThemeNotifier>();
+    final settingsNotifier = context.watch<SettingsNotifier>();
 
     return MaterialApp(
       title: kAppName,
 
       theme: Global.lightTheme,
       darkTheme: Global.darkTheme,
-      themeMode: themeNotifier.getThemeMode,
+      themeMode: settingsNotifier.getCustom<ThemeMode>(SettingKey.themeMode),
 
       home: HomePage(),
     );

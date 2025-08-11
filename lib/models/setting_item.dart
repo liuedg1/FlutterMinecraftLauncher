@@ -10,6 +10,8 @@ enum SettingCategory { launcher, game }
 /// Each setting has a key [key], a name [name], a , a generic default value[defaultValue], and a [SettingCategory] [category].
 ///
 /// For settings of type [SettingType.dropdown], a list of [options] must be provided.
+///
+/// [optionLabelBuilder] An optional function to generate display labels for options; defaults to `option.toString()`.
 class SettingItem<T> {
   final SettingKey key;
   final String name;
@@ -17,7 +19,8 @@ class SettingItem<T> {
   final SettingType type;
   final SettingCategory category;
   final IconData? icon;
-  final List<String>? options;
+  final List<T>? options;
+  final String Function(dynamic)? optionLabelBuilder;
 
   const SettingItem({
     required this.key,
@@ -27,6 +30,7 @@ class SettingItem<T> {
     required this.category,
     this.icon,
     this.options,
+    this.optionLabelBuilder,
   }) : assert(
          type != SettingType.dropdown || options != null,
          'options must be provided when type is SettingType.dropdown',
