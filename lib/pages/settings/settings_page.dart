@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_minecraft_launcher/pages/settings/settings_page_about.dart';
 import 'package:flutter_minecraft_launcher/pages/settings/settings_page_game.dart';
 import 'package:flutter_minecraft_launcher/pages/settings/settings_page_launcher.dart';
@@ -16,32 +17,34 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   int _selectedIndex = 0;
 
-  final List<NavigationDrawerItem> _settingsPageSubItems = [
-    const NavigationDrawerItem(
-      page: SettingsPageLauncher(),
-      destination: NavigationDrawerDestination(
-        icon: Icon(Icons.rocket_launch),
-        label: Text('Launcher'),
-      ),
-    ),
-    const NavigationDrawerItem(
-      page: SettingsPageGame(),
-      destination: NavigationDrawerDestination(
-        icon: Icon(Icons.gamepad),
-        label: Text('Game'),
-      ),
-    ),
-    const NavigationDrawerItem(
-      page: SettingsPageAbout(),
-      destination: NavigationDrawerDestination(
-        icon: Icon(Icons.book),
-        label: Text('About'),
-      ),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<NavigationDrawerItem> settingsPageSubItems = [
+      NavigationDrawerItem(
+        page: const SettingsPageLauncher(),
+        destination: NavigationDrawerDestination(
+          icon: const Icon(Icons.rocket_launch),
+          label: Text(
+            FlutterI18n.translate(context, 'settings.launcher.title'),
+          ),
+        ),
+      ),
+      NavigationDrawerItem(
+        page: const SettingsPageGame(),
+        destination: NavigationDrawerDestination(
+          icon: const Icon(Icons.gamepad),
+          label: Text(FlutterI18n.translate(context, 'settings.game')),
+        ),
+      ),
+      NavigationDrawerItem(
+        page: const SettingsPageAbout(),
+        destination: NavigationDrawerDestination(
+          icon: const Icon(Icons.book),
+          label: Text(FlutterI18n.translate(context, 'settings.about')),
+        ),
+      ),
+    ];
+
     ThemeData theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -75,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
 
               //Destinations
-              for (var item in _settingsPageSubItems) item.destination,
+              for (var item in settingsPageSubItems) item.destination,
             ],
           ),
         ),
@@ -84,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
         Expanded(
           child: IndexedStack(
             index: _selectedIndex,
-            children: _settingsPageSubItems.map((item) => item.page).toList(),
+            children: settingsPageSubItems.map((item) => item.page).toList(),
           ),
         ),
       ],

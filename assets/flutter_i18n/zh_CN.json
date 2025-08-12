@@ -1,0 +1,33 @@
+{
+  "launch": {
+    "title": "启动"
+  },
+  "versions": {
+    "title": "版本"
+  },
+  "download": {
+    "title": "下载",
+    "minecraft": "我的世界",
+    "mods": "模组",
+    "modpacks": "整合包"
+  },
+  "settings": {
+    "title": "设置",
+    "launcher": {
+      "title": "启动器",
+      "pageTitle": "启动器设置",
+      "language": {
+        "title": "语言",
+        "zh_CN": "简体中文",
+        "en_US": "美式英语"
+      },      "themeMode": {
+        "title": "主题模式",
+        "system": "跟随系统",
+        "light": "亮色",
+        "dark": "深色 "
+      }
+    },
+    "game": "游戏",
+    "about": "关于"
+  }
+}

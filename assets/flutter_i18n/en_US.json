@@ -1,0 +1,34 @@
+{
+  "launch": {
+    "title": "Launch"
+  },
+  "versions": {
+    "title": "Versions"
+  },
+  "download": {
+    "title": "Download",
+    "minecraft": "Minecraft",
+    "mods": "Mods",
+    "modpacks": "Modpacks"
+  },
+  "settings": {
+    "title": "Settings",
+    "launcher": {
+      "title": "Launcher",
+      "pageTitle": "Launcher Settings",
+      "language": {
+        "title": "Language",
+        "zh_CN": "Chinese Simplified",
+        "en_US": "American English"
+      },
+      "themeMode": {
+        "title": "Theme Mode",
+        "system": "Follow System",
+        "light": "Light",
+        "dark": "Dark "
+      }
+    },
+    "game": "Game",
+    "about": "About"
+  }
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
 
 import '../models/navigation_item.dart';
@@ -17,43 +18,41 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  //List of NavigationRailItems
-  final List<NavigationRailItem> _navigationRailItems = [
-    const NavigationRailItem(
-      page: LaunchPage(),
-      destination: NavigationRailDestination(
-        icon: Icon(Icons.rocket_launch),
-        label: Text('Launch'),
-      ),
-    ),
-
-    const NavigationRailItem(
-      page: VersionsPage(),
-      destination: NavigationRailDestination(
-        icon: Icon(Icons.gamepad),
-        label: Text('Versions'),
-      ),
-    ),
-    const NavigationRailItem(
-      page: DownloadPage(),
-      destination: NavigationRailDestination(
-        selectedIcon: Icon(Icons.download),
-        icon: Icon(Icons.download),
-        label: Text('Download'),
-      ),
-    ),
-    const NavigationRailItem(
-      page: SettingsPage(),
-      destination: NavigationRailDestination(
-        selectedIcon: Icon(Icons.settings),
-        icon: Icon(Icons.settings),
-        label: Text('Settings'),
-      ),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    //List of NavigationRailItems
+    final List<NavigationRailItem> navigationRailItems = [
+      NavigationRailItem(
+        page: const LaunchPage(),
+        destination: NavigationRailDestination(
+          icon: const Icon(Icons.rocket_launch),
+          label: Text(FlutterI18n.translate(context, "launch.title")),
+        ),
+      ),
+
+      NavigationRailItem(
+        page: const VersionsPage(),
+        destination: NavigationRailDestination(
+          icon: const Icon(Icons.gamepad),
+          label: Text(FlutterI18n.translate(context, "versions.title")),
+        ),
+      ),
+      NavigationRailItem(
+        page: const DownloadPage(),
+        destination: NavigationRailDestination(
+          icon: const Icon(Icons.download),
+          label: Text(FlutterI18n.translate(context, "download.title")),
+        ),
+      ),
+      NavigationRailItem(
+        page: const SettingsPage(),
+        destination: NavigationRailDestination(
+          icon: const Icon(Icons.settings),
+          label: Text(FlutterI18n.translate(context, "settings.title")),
+        ),
+      ),
+    ];
+
     return Scaffold(
       body: Row(
         children: [
@@ -62,7 +61,7 @@ class _HomePageState extends State<HomePage> {
             //Add padding on the top of destinations
             leading: const SizedBox(height: kDefaultPadding / 8),
 
-            destinations: _navigationRailItems
+            destinations: navigationRailItems
                 .map((item) => item.destination)
                 .toList(),
             selectedIndex: _selectedIndex,
@@ -79,7 +78,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: IndexedStack(
               index: _selectedIndex,
-              children: _navigationRailItems.map((item) => item.page).toList(),
+              children: navigationRailItems.map((item) => item.page).toList(),
             ),
           ),
         ],

@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
 import 'package:flutter_minecraft_launcher/models/setting_key.dart';
 import 'package:flutter_minecraft_launcher/notifiers/settings_notifier.dart';
@@ -21,7 +24,7 @@ void main() async {
     size: Size(1100, 700),
     minimumSize: Size(800, 600),
 
-    //e.g. Flutter Minecraft Launcher 1.0.0+1
+    ///e.g. Flutter Minecraft Launcher 1.0.0+1
     title: '$kAppName ${info.version}+${info.buildNumber}',
     titleBarStyle: TitleBarStyle.normal,
     center: true,
@@ -47,16 +50,58 @@ class FMCLBaseApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingsNotifier = context.watch<SettingsNotifier>();
+    final List<Locale> supportedLocales = kSupportLanguage
+        .map((code) => _parseLocale(code))
+        .toList();
 
-    return MaterialApp(
-      title: kAppName,
+    return Consumer<SettingsNotifier>(
+      builder: (context, settingsNotifier, child) {
+        final languageCode = settingsNotifier.getString(SettingKey.language);
+        final locale = _parseLocale(languageCode);
 
-      theme: Global.lightTheme,
-      darkTheme: Global.darkTheme,
-      themeMode: settingsNotifier.getCustom<ThemeMode>(SettingKey.themeMode),
+        return MaterialApp(
+          title: kAppName,
 
-      home: HomePage(),
+          theme: Global.lightTheme,
+          darkTheme: Global.darkTheme,
+          themeMode: settingsNotifier.getCustom<ThemeMode>(
+            SettingKey.themeMode,
+          ),
+
+          home: HomePage(),
+
+          ///I18n
+          locale: locale,
+          localizationsDelegates: [
+            FlutterI18nDelegate(
+              translationLoader: FileTranslationLoader(
+                useCountryCode: true,
+                fallbackFile: 'en_US.json',
+              ),
+              missingTranslationHandler: (key, locale) {
+                if (kDebugMode) {
+                  print(
+                    "--- Missing Key: $key, languageCode: ${locale?.languageCode}",
+                  );
+                }
+              },
+            ),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+
+          ///Support RTL
+          builder: FlutterI18n.rootAppBuilder(),
+
+          supportedLocales: supportedLocales,
+        );
+      },
     );
+  }
+
+  Locale _parseLocale(String languageCode) {
+    final parts = languageCode.split('_');
+    return Locale(parts[0], parts.length > 1 ? parts[1] : null);
   }
 }

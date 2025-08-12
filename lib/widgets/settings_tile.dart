@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +39,7 @@ class SettingTile extends StatelessWidget {
     SettingsNotifier settingsNotifier,
   ) {
     return SwitchListTile(
-      title: Text(item.name),
+      title: Text(FlutterI18n.translate(context, item.name)),
       value: context.watch<SettingsNotifier>().getBool(item.key),
       onChanged: (newValue) {
         settingsNotifier.updateSetting<bool>(item.key, newValue);
@@ -49,8 +50,10 @@ class SettingTile extends StatelessWidget {
   ListTile _buildDropdownTile(BuildContext context) {
     ///Build menu list
     final dropdownMenuEntries = (item.options as List).map((option) {
-      final String label =
-          item.optionLabelBuilder?.call(option) ?? option.toString();
+      final String label = FlutterI18n.translate(
+        context,
+        item.optionLabelBuilder?.call(option) ?? option.toString(),
+      );
       return DropdownMenuItem(
         ///Raw data
         value: option,
@@ -69,7 +72,7 @@ class SettingTile extends StatelessWidget {
         vertical: kDefaultPadding / 2,
       ),
 
-      title: Text(item.name),
+      title: Text(FlutterI18n.translate(context, item.name)),
 
       trailing: DropdownButton(
         ///Get current value from notifier

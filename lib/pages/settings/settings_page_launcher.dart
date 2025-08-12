@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_minecraft_launcher/widgets/settings_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,7 @@ class SettingsPageLauncher extends StatelessWidget {
               bottom: kDefaultPadding,
             ),
             child: Text(
-              'Launcher Settings',
+              FlutterI18n.translate(context, 'settings.launcher.pageTitle'),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ),

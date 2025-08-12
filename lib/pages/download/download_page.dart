@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
 import 'package:flutter_minecraft_launcher/pages/download/download_page_minecraft.dart';
 import 'package:flutter_minecraft_launcher/pages/download/download_page_mod.dart';
@@ -16,32 +17,32 @@ class DownloadPage extends StatefulWidget {
 class _DownloadPageState extends State<DownloadPage> {
   int _selectedIndex = 0;
 
-  final List<NavigationDrawerItem> _downloadPageSubItems = [
-    const NavigationDrawerItem(
-      page: DownloadPageMinecraft(),
-      destination: NavigationDrawerDestination(
-        icon: Icon(Icons.code),
-        label: Text('Minecraft'),
-      ),
-    ),
-    const NavigationDrawerItem(
-      page: DownloadPageMod(),
-      destination: NavigationDrawerDestination(
-        icon: Icon(Icons.extension),
-        label: Text('Mods'),
-      ),
-    ),
-    const NavigationDrawerItem(
-      page: DownloadPageModpack(),
-      destination: NavigationDrawerDestination(
-        icon: Icon(Icons.backpack),
-        label: Text('Modpacks'),
-      ),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<NavigationDrawerItem> downloadPageSubItems = [
+      NavigationDrawerItem(
+        page: const DownloadPageMinecraft(),
+        destination: NavigationDrawerDestination(
+          icon: const Icon(Icons.code),
+          label: Text(FlutterI18n.translate(context, 'download.title')),
+        ),
+      ),
+      NavigationDrawerItem(
+        page: const DownloadPageMod(),
+        destination: NavigationDrawerDestination(
+          icon: const Icon(Icons.extension),
+          label: Text(FlutterI18n.translate(context, 'download.mods')),
+        ),
+      ),
+      NavigationDrawerItem(
+        page: const DownloadPageModpack(),
+        destination: NavigationDrawerDestination(
+          icon: const Icon(Icons.backpack),
+          label: Text(FlutterI18n.translate(context, 'download.modpacks')),
+        ),
+      ),
+    ];
+
     ThemeData theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -72,11 +73,14 @@ class _DownloadPageState extends State<DownloadPage> {
                   kDefaultPadding,
                   kDefaultPadding,
                 ),
-                child: Text('Download', style: theme.textTheme.headlineMedium),
+                child: Text(
+                  FlutterI18n.translate(context, 'download.title'),
+                  style: theme.textTheme.headlineMedium,
+                ),
               ),
 
               //Destinations
-              for (var item in _downloadPageSubItems) item.destination,
+              for (var item in downloadPageSubItems) item.destination,
             ],
           ),
         ),
@@ -85,7 +89,7 @@ class _DownloadPageState extends State<DownloadPage> {
         Expanded(
           child: IndexedStack(
             index: _selectedIndex,
-            children: _downloadPageSubItems.map((item) => item.page).toList(),
+            children: downloadPageSubItems.map((item) => item.page).toList(),
           ),
         ),
       ],

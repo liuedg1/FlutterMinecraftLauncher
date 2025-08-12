@@ -9,29 +9,29 @@ import '../models/setting_key.dart';
 class SettingsNotifier extends ChangeNotifier {
   ///Default value of setting keys
   final List<SettingItem> _settings = [
-    const SettingItem<String>(
+    SettingItem<String>(
       key: SettingKey.language,
-      name: 'Language',
+      name: 'settings.launcher.language.title',
       type: SettingType.dropdown,
       category: SettingCategory.launcher,
       options: kSupportLanguage,
       defaultValue: 'en_US',
+      optionLabelBuilder: (option) {
+        return 'settings.launcher.language.$option';
+      },
     ),
 
     SettingItem<ThemeMode>(
       key: SettingKey.themeMode,
-      name: 'Theme Mode',
+      name: 'settings.launcher.themeMode.title',
       type: SettingType.dropdown,
       category: SettingCategory.launcher,
       options: const [ThemeMode.system, ThemeMode.dark, ThemeMode.light],
       defaultValue: ThemeMode.system,
 
-      ///Uppercase first letter
       optionLabelBuilder: (option) {
-        final optionThemeMode = option as ThemeMode;
-        final String name = optionThemeMode.name;
-        if (name.isEmpty) return '';
-        return name[0].toUpperCase() + name.substring(1);
+        ThemeMode themeMode = option as ThemeMode;
+        return 'settings.launcher.themeMode.${themeMode.name}';
       },
     ),
   ];
@@ -70,12 +70,20 @@ class SettingsNotifier extends ChangeNotifier {
   double getDouble(SettingKey key) => getCustom<double>(key) ?? 0.0;
 
   void updateSetting<T>(SettingKey key, T newValue) {
-    //Return if same value
+    ///Return if same value
     if (_values[key] == newValue) {
       return;
     }
 
     _values[key] = newValue;
+
+    ///Call onUpdate
+    final settingItem = _settings.firstWhere((item) => item.key == key);
+
+    if (settingItem.onUpdate != null) {
+      settingItem.onUpdate!(newValue);
+    }
+
     notifyListeners();
   }
 }

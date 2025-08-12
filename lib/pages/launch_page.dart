@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../constants.dart';
 
@@ -16,7 +17,7 @@ class _LaunchPageState extends State<LaunchPage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _launchCurrentMinecraft,
-        label: const Text('Launch'),
+        label: Text(FlutterI18n.translate(context, 'launch.title')),
         icon: const Icon(Icons.rocket_launch),
       ),
 
