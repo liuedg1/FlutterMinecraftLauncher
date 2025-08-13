@@ -46,51 +46,56 @@ class _SettingsPageState extends State<SettingsPage> {
     ];
 
     ThemeData theme = Theme.of(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          //Divider()
-          decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(color: theme.dividerColor.withAlpha(100)),
+    return Material(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            //Divider()
+            decoration: BoxDecoration(
+              border: Border(
+                left: BorderSide(color: theme.dividerColor.withAlpha(100)),
+              ),
+            ),
+
+            child: NavigationDrawer(
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+
+              children: [
+                Padding(
+                  //Align Text with Destination
+                  padding: const EdgeInsets.fromLTRB(
+                    kDefaultPadding * 1.5,
+                    kDefaultPadding,
+                    kDefaultPadding,
+                    kDefaultPadding,
+                  ),
+                  child: Text(
+                    'Settings',
+                    style: theme.textTheme.headlineMedium,
+                  ),
+                ),
+
+                //Destinations
+                for (var item in settingsPageSubItems) item.destination,
+              ],
             ),
           ),
 
-          child: NavigationDrawer(
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-
-            children: [
-              Padding(
-                //Align Text with Destination
-                padding: const EdgeInsets.fromLTRB(
-                  kDefaultPadding * 1.5,
-                  kDefaultPadding,
-                  kDefaultPadding,
-                  kDefaultPadding,
-                ),
-                child: Text('Settings', style: theme.textTheme.headlineMedium),
-              ),
-
-              //Destinations
-              for (var item in settingsPageSubItems) item.destination,
-            ],
+          //Display current page
+          Expanded(
+            child: IndexedStack(
+              index: _selectedIndex,
+              children: settingsPageSubItems.map((item) => item.page).toList(),
+            ),
           ),
-        ),
-
-        //Display current page
-        Expanded(
-          child: IndexedStack(
-            index: _selectedIndex,
-            children: settingsPageSubItems.map((item) => item.page).toList(),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
