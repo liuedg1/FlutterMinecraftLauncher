@@ -10,7 +10,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'common/global.dart';
 import 'core/service_locator.dart';
 
 void main() async {
@@ -57,13 +56,33 @@ class FMCLBaseApp extends StatelessWidget {
     return Consumer<SettingsNotifier>(
       builder: (context, settingsNotifier, child) {
         final languageCode = settingsNotifier.getString(SettingKey.language);
+        //        final themeColor = settingsNotifier.getCustom(SettingKey.themeColor);
         final locale = _parseLocale(languageCode);
+
+        // Use NotoSans
+        //TODO: Custom seedColor
+        final ThemeData lightTheme = ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+            brightness: Brightness.light,
+          ),
+          fontFamily: 'Noto Sans SC',
+          brightness: Brightness.light,
+        );
+        final ThemeData darkTheme = ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+            brightness: Brightness.dark,
+          ),
+          fontFamily: 'Noto Sans SC',
+          brightness: Brightness.dark,
+        );
 
         return MaterialApp(
           title: kAppName,
 
-          theme: Global.lightTheme,
-          darkTheme: Global.darkTheme,
+          theme: lightTheme,
+          darkTheme: darkTheme,
           themeMode: settingsNotifier.getCustom<ThemeMode>(
             SettingKey.themeMode,
           ),
