@@ -2,11 +2,14 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
+import 'package:hive/hive.dart';
 
 import '../models/setting_item.dart';
 import '../models/setting_key.dart';
 
 class SettingsNotifier extends ChangeNotifier {
+  late final Box _settingsBox;
+
   ///Default value of setting keys
   final List<SettingItem> _settings = [
     SettingItem<String>(
@@ -38,8 +41,27 @@ class SettingsNotifier extends ChangeNotifier {
 
   List<SettingItem> get settingConfigs => _settings;
 
+  SettingsNotifier(Box settingsBox) {
+    _settingsBox = settingsBox;
+    _loadSettings();
+  }
+
+  void _loadSettings() {
+    final Map<SettingKey, dynamic> loadedValues = {};
+    for (var item in _settings) {
+      dynamic storedValue = _settingsBox.get(
+        item.key.name,
+        defaultValue: item.defaultValue,
+      );
+
+      loadedValues[item.key] = storedValue;
+    }
+
+    _values = loadedValues;
+  }
+
   ///A map that holds the current, runtime values of all settings
-  late final Map<SettingKey, dynamic> _values = {
+  late Map<SettingKey, dynamic> _values = {
     for (var item in _settings) item.key: item.defaultValue,
   };
 
@@ -69,13 +91,16 @@ class SettingsNotifier extends ChangeNotifier {
 
   double getDouble(SettingKey key) => getCustom<double>(key) ?? 0.0;
 
-  void updateSetting<T>(SettingKey key, T newValue) {
+  Future<void> updateSetting<T>(SettingKey key, T newValue) async {
     ///Return if same value
     if (_values[key] == newValue) {
       return;
     }
 
     _values[key] = newValue;
+
+    ///Write to Hive Box
+    await _settingsBox.put(key.name, newValue);
 
     ///Call onUpdate
     final settingItem = _settings.firstWhere((item) => item.key == key);

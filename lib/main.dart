@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -6,7 +8,10 @@ import 'package:flutter_minecraft_launcher/constants.dart';
 import 'package:flutter_minecraft_launcher/models/setting_key.dart';
 import 'package:flutter_minecraft_launcher/notifiers/settings_notifier.dart';
 import 'package:flutter_minecraft_launcher/pages/main_page.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -15,10 +20,25 @@ import 'core/service_locator.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
+
+  ///Get customPath to avoid path like this: C:\Users\Example\AppData\Roaming\com.example\flutter_minecraft_launcher, we don't need com.example
+  final Directory appSupportDir = await getApplicationSupportDirectory();
+  final String parentPath = path.dirname(appSupportDir.path);
+  final String rootPath = path.dirname(parentPath);
+  final String customPath = path.join(rootPath, kAppNameAbb);
+
+  ///Check if customPath is exists
+  final Directory customDir = Directory(customPath);
+  if (!await customDir.exists()) {
+    await customDir.create(recursive: true);
+  }
+
+  Hive.init(customPath);
+  await Hive.openBox('settings');
+
   await initializeLocator();
 
   final info = getIt<PackageInfo>();
-
   WindowOptions windowOptions = WindowOptions(
     size: Size(1100, 700),
     minimumSize: Size(800, 600),
@@ -37,7 +57,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => SettingsNotifier()),
+        ChangeNotifierProvider.value(value: getIt<SettingsNotifier>()),
       ],
       child: const FMCLBaseApp(),
     ),
