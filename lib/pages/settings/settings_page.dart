@@ -76,7 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     kDefaultPadding,
                   ),
                   child: Text(
-                    'Settings',
+                    FlutterI18n.translate(context, 'settings.title'),
                     style: theme.textTheme.headlineMedium,
                   ),
                 ),

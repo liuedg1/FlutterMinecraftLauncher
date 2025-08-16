@@ -24,7 +24,7 @@ class _DownloadPageState extends State<DownloadPage> {
         page: const DownloadPageMinecraft(),
         destination: NavigationDrawerDestination(
           icon: const Icon(Icons.code),
-          label: Text(FlutterI18n.translate(context, 'download.title')),
+          label: Text(FlutterI18n.translate(context, 'download.minecraft')),
         ),
       ),
       NavigationDrawerItem(
