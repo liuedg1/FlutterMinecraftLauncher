@@ -49,6 +49,7 @@ class SettingsNotifier extends ChangeNotifier {
   void _loadSettings() {
     final Map<SettingKey, dynamic> loadedValues = {};
     for (var item in _settings) {
+      ///Get in Hive
       dynamic storedValue = _settingsBox.get(
         item.key.name,
         defaultValue: item.defaultValue,
@@ -100,7 +101,7 @@ class SettingsNotifier extends ChangeNotifier {
     _values[key] = newValue;
 
     ///Write to Hive Box
-    await _settingsBox.put(key.name, newValue);
+    await _settingsBox.put(key.toString(), newValue);
 
     ///Call onUpdate
     final settingItem = _settings.firstWhere((item) => item.key == key);

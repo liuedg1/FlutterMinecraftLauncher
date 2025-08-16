@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'adapters/theme_mode_adapter.dart';
 import 'core/service_locator.dart';
 
 void main() async {
@@ -35,6 +36,9 @@ void main() async {
 
   Hive.init(customPath);
   await Hive.openBox('settings');
+
+  ///Register adapters
+  Hive.registerAdapter(ThemeModeAdapter());
 
   await initializeLocator();
 
