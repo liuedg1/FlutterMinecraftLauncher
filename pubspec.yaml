@@ -17,8 +17,21 @@ dependencies:
   flutter:
     sdk: flutter
 
-
+  window_manager: ^0.5.1
   cupertino_icons: ^1.0.8
+  package_info_plus: ^8.3.0
+  get_it: ^8.2.0
+  provider: ^6.1.5
+  dio: ^5.9.0
+  flutter_i18n: ^0.36.3
+  flutter_localizations:
+    sdk: flutter
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.5
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:
@@ -31,6 +44,9 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
 
+  hive_generator: ^2.0.0
+  isar_generator: ^3.1.0+1
+  build_runner: ^2.4.13
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -38,6 +54,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  assets:
+    - assets/flutter_i18n/
 
   fonts:
     - family: Noto Sans SC
