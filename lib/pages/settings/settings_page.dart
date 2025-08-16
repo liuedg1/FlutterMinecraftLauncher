@@ -61,6 +61,10 @@ class _SettingsPageState extends State<SettingsPage> {
             child: NavigationDrawer(
               selectedIndex: _selectedIndex,
               onDestinationSelected: (index) {
+                if (_selectedIndex == index) return;
+                //Removes all focus in the current context
+                FocusScope.of(context).unfocus();
+
                 setState(() {
                   _selectedIndex = index;
                 });
