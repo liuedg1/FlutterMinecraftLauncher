@@ -34,14 +34,13 @@ void main() async {
     await customDir.create(recursive: true);
   }
 
+  ///Hive
   Hive.init(customPath);
+  //Register adapters
+  Hive.registerAdapter(ThemeModeAdapter());
   await Hive.openBox('settings');
 
-  ///Register adapters
-  Hive.registerAdapter(ThemeModeAdapter());
-
   await initializeLocator();
-
   final info = getIt<PackageInfo>();
   WindowOptions windowOptions = WindowOptions(
     size: Size(1100, 700),
