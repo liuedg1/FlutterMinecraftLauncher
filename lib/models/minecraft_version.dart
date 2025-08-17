@@ -12,9 +12,11 @@
 
 library;
 
-class MinecraftVersion {
-  final String id, type, url, time, releaseTime;
+import 'dart:developer' as developer;
 
+class MinecraftVersion {
+  final String id, url, time, releaseTime;
+  final VersionType type;
   const MinecraftVersion({
     required this.id,
     required this.type,
@@ -26,7 +28,7 @@ class MinecraftVersion {
   factory MinecraftVersion.fromJson(Map<String, dynamic> json) {
     return MinecraftVersion(
       id: json['id'] as String,
-      type: json['type'] as String,
+      type: VersionType.fromString(json['type'] as String)!,
       url: json['url'] as String,
       time: json['time'] as String,
       releaseTime: json['releaseTime'] as String,
@@ -36,5 +38,43 @@ class MinecraftVersion {
   @override
   String toString() {
     return 'MinecraftVersion(id: $id, type: $type, url: $url, time: $time releaseTime: $releaseTime)';
+  }
+}
+
+enum VersionType {
+  release,
+  snapshot,
+  oldBeta,
+  oldAlpha;
+
+  static VersionType? fromString(String name) {
+    final normalizedName = name.toLowerCase().replaceAll('_', '');
+
+    try {
+      return values.firstWhere(
+        (type) => type.name.toLowerCase() == normalizedName,
+      );
+    } catch (e) {
+      developer.log(
+        "Couldn't parse '$name' as VersionType!",
+        name: 'VersionType',
+        level: 900,
+        error: e,
+      );
+      return null;
+    }
+  }
+
+  ///Matches the version types returned by Mojang's version manifest API
+  @override
+  String toString() {
+    switch (this) {
+      case VersionType.oldBeta:
+        return 'old_beta';
+      case VersionType.oldAlpha:
+        return 'old_alpha';
+      default:
+        return name;
+    }
   }
 }
