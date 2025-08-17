@@ -1,6 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
+import 'package:flutter_minecraft_launcher/core/network/dio_client.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/minecraft_version.dart';
@@ -15,7 +15,6 @@ class DownloadPageMinecraft extends StatefulWidget {
 class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
   late final Future<List<MinecraftVersion>> _versionsFuture;
   Set<VersionType> _versionTypeSelection = <VersionType>{VersionType.release};
-  final Dio _dio = Dio();
 
   final _segments = const <ButtonSegment<VersionType>>[
     ButtonSegment<VersionType>(
@@ -132,7 +131,7 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
 
   Future<List<MinecraftVersion>> _fetchAndParseVersions() async {
     try {
-      final response = await _dio.get(
+      final response = await DioClient().dio.get(
         "https://piston-meta.mojang.com/mc/game/version_manifest.json",
       );
 
