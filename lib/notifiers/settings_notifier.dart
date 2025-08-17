@@ -41,8 +41,7 @@ class SettingsNotifier extends ChangeNotifier {
 
   List<SettingItem> get settingConfigs => _settings;
 
-  SettingsNotifier(Box settingsBox) {
-    _settingsBox = settingsBox;
+  SettingsNotifier(this._settingsBox) {
     _loadSettings();
   }
 
@@ -101,7 +100,7 @@ class SettingsNotifier extends ChangeNotifier {
     _values[key] = newValue;
 
     ///Write to Hive Box
-    await _settingsBox.put(key.toString(), newValue);
+    await _settingsBox.put(key.name, newValue);
 
     ///Call onUpdate
     final settingItem = _settings.firstWhere((item) => item.key == key);

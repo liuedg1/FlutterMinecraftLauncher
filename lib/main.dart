@@ -38,9 +38,9 @@ void main() async {
   Hive.init(customPath);
   //Register adapters
   Hive.registerAdapter(ThemeModeAdapter());
-  await Hive.openBox('settings');
+  Box settingsBox = await Hive.openBox('settings');
+  await initializeLocator(settingsBox);
 
-  await initializeLocator();
   final info = getIt<PackageInfo>();
   WindowOptions windowOptions = WindowOptions(
     size: Size(1100, 700),
