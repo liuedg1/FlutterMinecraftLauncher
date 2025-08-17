@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
 import 'package:flutter_minecraft_launcher/core/network/dio_client.dart';
+import 'package:flutter_minecraft_launcher/pages/download/version_install/version_install_page.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/minecraft_version.dart';
@@ -95,7 +96,16 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
 
                           ///InkWell: Add ripple effect && process on tap
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VersionInstallPage(
+                                    minecraftVersion: version,
+                                  ),
+                                ),
+                              );
+                            },
                             borderRadius: BorderRadius.circular(12.0),
 
                             child: ListTile(
