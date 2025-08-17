@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/minecraft_version.dart';
 
@@ -103,12 +104,10 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
                               title: Text(
                                 version.id,
                                 style: Theme.of(context).textTheme.titleMedium,
-                                textAlign: TextAlign.left,
                               ),
                               subtitle: Text(
-                                version.releaseTime,
+                                'Release time: ${DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.parse(version.releaseTime).toLocal())}',
                                 style: Theme.of(context).textTheme.bodyLarge,
-                                textAlign: TextAlign.left,
                               ),
                             ),
                           ),
