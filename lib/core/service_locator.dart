@@ -6,11 +6,11 @@ import '../notifiers/settings_notifier.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> initializeLocator() async {
+Future<void> initializeLocator(Box box) async {
   ///PackageInfo
   final packageInfo = await PackageInfo.fromPlatform();
   getIt.registerSingleton<PackageInfo>(packageInfo);
 
   ///Register Notifier
-  getIt.registerLazySingleton(() => SettingsNotifier(Hive.box('settings')));
+  getIt.registerLazySingleton(() => SettingsNotifier(box));
 }
