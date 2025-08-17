@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_minecraft_launcher/constants.dart';
 
 import '../../models/minecraft_version.dart';
 
@@ -68,6 +69,8 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
                       pinned: true,
                       floating: false,
                       snap: false,
+
+                      ///FIXME: SegmentButton 'twitch' animation on change selection
                       title: SegmentedButton<VersionType>(
                         segments: _segments,
                         selected: _versionTypeSelection,
@@ -84,10 +87,30 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
                       delegate: SliverChildBuilderDelegate((context, index) {
                         final version = filteredVersions[index];
 
-                        return ListTile(
-                          title: Text(version.id),
-                          subtitle: Text(
-                            'Type: ${version.type}, Release time: ${version.releaseTime}, Time: ${version.time}, Url: ${version.url}',
+                        return Card(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: kDefaultPadding / 2,
+                            horizontal: kDefaultPadding / 2,
+                          ),
+
+                          ///InkWell: Add ripple effect && process on tap
+                          child: InkWell(
+                            onTap: () {},
+                            borderRadius: BorderRadius.circular(12.0),
+
+                            child: ListTile(
+                              dense: true,
+                              title: Text(
+                                version.id,
+                                style: Theme.of(context).textTheme.titleMedium,
+                                textAlign: TextAlign.left,
+                              ),
+                              subtitle: Text(
+                                version.releaseTime,
+                                style: Theme.of(context).textTheme.bodyLarge,
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
                           ),
                         );
                       }, childCount: filteredVersions.length),
