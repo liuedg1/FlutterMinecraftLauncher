@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_minecraft_launcher/adapters/api_provider_adapter.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
+import 'package:flutter_minecraft_launcher/core/instances.dart';
 import 'package:flutter_minecraft_launcher/models/setting_key.dart';
 import 'package:flutter_minecraft_launcher/notifiers/settings_notifier.dart';
 import 'package:flutter_minecraft_launcher/pages/main_page.dart';
@@ -38,6 +39,7 @@ void main() async {
   Hive.init(customPath);
   //Register adapters
   Hive.registerAdapter(ThemeModeAdapter());
+  Hive.registerAdapter(ApiProviderAdapter());
   await Hive.openBox('settings');
 
   await initializeLocator();
@@ -121,11 +123,9 @@ class FMCLBaseApp extends StatelessWidget {
                 fallbackFile: 'en_US.json',
               ),
               missingTranslationHandler: (key, locale) {
-                if (kDebugMode) {
-                  print(
-                    "--- Missing Key: $key, languageCode: ${locale?.languageCode}",
-                  );
-                }
+                Instances.log.w(
+                  "Missing Key: $key, languageCode: ${locale?.languageCode}",
+                );
               },
             ),
             GlobalMaterialLocalizations.delegate,

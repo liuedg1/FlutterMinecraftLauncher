@@ -21,6 +21,11 @@
         "zh_CN": "简体中文",
         "en_US": "美式英语"
       },
+      "apiProvider": {
+        "title": "API提供源",
+        "mojang": "Mojang",
+        "bmcl": "BMCL API"
+      },
       "themeMode": {
         "title": "主题模式",
         "system": "跟随系统",

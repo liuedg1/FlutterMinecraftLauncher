@@ -1,7 +1,7 @@
-import 'dart:developer' as developer;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
+import 'package:flutter_minecraft_launcher/core/instances.dart';
+import 'package:flutter_minecraft_launcher/core/network/api_urls.dart';
 import 'package:hive/hive.dart';
 
 import '../models/setting_item.dart';
@@ -35,6 +35,19 @@ class SettingsNotifier extends ChangeNotifier {
       optionLabelBuilder: (option) {
         ThemeMode themeMode = option as ThemeMode;
         return 'settings.launcher.themeMode.${themeMode.name}';
+      },
+    ),
+
+    SettingItem<ApiProvider>(
+      key: SettingKey.apiProvider,
+      name: 'settings.launcher.apiProvider.title',
+      type: SettingType.dropdown,
+      category: SettingCategory.launcher,
+      options: const [ApiProvider.mojang, ApiProvider.bmcl],
+      defaultValue: ApiProvider.mojang,
+      optionLabelBuilder: (option) {
+        ApiProvider apiProvider = option as ApiProvider;
+        return 'settings.launcher.apiProvider.${apiProvider.name}';
       },
     ),
   ];
@@ -73,11 +86,9 @@ class SettingsNotifier extends ChangeNotifier {
     if (value is T) {
       return value;
     } else {
-      developer.log(
+      Instances.log.w(
         "Setting key '$key' was expected to be of type '$T', but found value '$value' of type '${value.runtimeType}'!",
-        name: 'SettingsNotifier',
-        level: 900,
-        error: key,
+        stackTrace: StackTrace.current,
       );
 
       return null;
@@ -101,7 +112,7 @@ class SettingsNotifier extends ChangeNotifier {
     _values[key] = newValue;
 
     ///Write to Hive Box
-    await _settingsBox.put(key.toString(), newValue);
+    await _settingsBox.put(key.name, newValue);
 
     ///Call onUpdate
     final settingItem = _settings.firstWhere((item) => item.key == key);

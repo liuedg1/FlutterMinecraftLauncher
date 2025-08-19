@@ -1,2 +1,2 @@
 ///All settings
-enum SettingKey { language, themeMode }
+enum SettingKey { language, themeMode, apiProvider }

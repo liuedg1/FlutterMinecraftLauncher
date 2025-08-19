@@ -21,6 +21,11 @@
         "zh_CN": "Chinese Simplified",
         "en_US": "American English"
       },
+      "apiProvider": {
+        "title": "API Provider",
+        "mojang": "Mojang",
+        "bmcl": "BMCL API"
+      },
       "themeMode": {
         "title": "Theme Mode",
         "system": "Follow System",
