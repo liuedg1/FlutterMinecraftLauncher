@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
 import 'package:flutter_minecraft_launcher/core/instances.dart';
@@ -70,7 +72,7 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
                     return const CircularProgressIndicator();
                   }
 
-                  ///Return if error
+                  ///Error handling
                   if (snapshot.hasError || snapshot.data == null) {
                     ApiProvider providerFromSetting = settingsNotifier
                         .getCustom(SettingKey.apiProvider);
@@ -78,12 +80,14 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
                     ///Refetch if there are errors and API provider changes
                     if (providerFromSetting != _currentProvider) {
                       _currentProvider = providerFromSetting;
+
+                      ///Delayed status updates
                       Future.microtask(() => refetch(providerFromSetting));
 
                       return const CircularProgressIndicator();
                     }
 
-                    ///Error handling
+                    ///Return error information
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -222,32 +226,47 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
       );
 
       if (response.statusCode == 200) {
+        dynamic responseData = response.data;
+
         /**
-         * {
-            "latest": {
-            ...
-            },
-            "versions": [
-            {
-            ...
-            },
-            {
-            ...
-            }
-            ]
+         *  {
+            "latest": {...},
+            "versions": [...]
             }
          */
-        final List<dynamic> rawList = response.data['versions'] as List;
-        //Convert JSON to Dart Model
+
+        ///Parse JSON strings (fixes where the BMCL API sometimes returns a JSON string)
+        if (responseData is String) {
+          Instances.log.i("Trying to parse JSON strings as JSON");
+          try {
+            responseData = jsonDecode(responseData);
+          } catch (e) {
+            Instances.log.e("JSON parsing failed: $responseData", error: e);
+            throw FormatException('Invalid JSON format: $responseData');
+          }
+        }
+
+        final List<dynamic> rawList = responseData['versions'] as List;
+
+        ///Convert JSON to Dart Model
         final List<MinecraftVersion> versions = rawList
             .map((json) => MinecraftVersion.fromJson(json))
             .toList();
 
+        Instances.log.i(
+          'Fetch versions is finished with http code ${response.statusCode}.',
+        );
+
         return versions;
       } else {
+        Instances.log.e(
+          'Error while fetching versions: ${response.statusMessage}, statusCode" ${response.statusCode}',
+        );
+
         throw Exception('Error: ${response.statusMessage}');
       }
     } catch (e) {
+      Instances.log.e('Error while fetching versions', error: e);
       rethrow;
     }
   }
