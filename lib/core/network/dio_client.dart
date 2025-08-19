@@ -14,12 +14,22 @@ class DioClient {
   DioClient._internal() {
     dio = Dio(
       BaseOptions(
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
       ),
     );
 
     dio.interceptors.add(_getUserAgentInterceptor());
+
+    dio.interceptors.add(
+      LogInterceptor(
+        request: false,
+        requestHeader: true,
+        requestBody: false,
+        responseHeader: false,
+        error: true,
+      ),
+    );
   }
 
   InterceptorsWrapper _getUserAgentInterceptor() {

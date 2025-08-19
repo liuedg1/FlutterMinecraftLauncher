@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_minecraft_launcher/constants.dart';
+import 'package:flutter_minecraft_launcher/core/instances.dart';
 import 'package:flutter_minecraft_launcher/core/network/dio_client.dart';
 import 'package:flutter_minecraft_launcher/pages/download/version_install/version_install_page.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +15,7 @@ class DownloadPageMinecraft extends StatefulWidget {
 }
 
 class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
-  late final Future<List<MinecraftVersion>> _versionsFuture;
+  late Future<List<MinecraftVersion>> _versionsFuture;
   Set<VersionType> _versionTypeSelection = <VersionType>{VersionType.release};
 
   final _segments = const <ButtonSegment<VersionType>>[
@@ -53,8 +54,46 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
               BuildContext context,
               AsyncSnapshot<List<MinecraftVersion>> snapshot,
             ) {
+              ///Display progress indicator while loading
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+
+              ///Return if error
+              if (snapshot.hasError || snapshot.data == null) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.error_outline, size: 48),
+                    const SizedBox(height: kDefaultPadding),
+                    Text('Loading failed'),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: kDefaultPadding / 2,
+                        horizontal: kDefaultPadding * 2,
+                      ),
+                      child: Text(
+                        snapshot.error?.toString() ?? 'Data is null',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          Instances.log.i('Trying to refetch versions');
+                          _versionsFuture = _fetchAndParseVersions();
+                        });
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                );
+              }
+
               if (snapshot.connectionState == ConnectionState.done) {
-                final List<MinecraftVersion> versions = snapshot.data ?? [];
+                ///Data must not be null here
+                final List<MinecraftVersion> versions = snapshot.data!;
 
                 ///Filter the currently selected version type
                 final filteredVersions = versions
@@ -127,12 +166,7 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
                 );
               }
 
-              //Return if error
-              if (snapshot.hasError) {
-                return Text(snapshot.error.toString());
-              }
-
-              //Display progress indicator while loading
+              ///Display progress indicator while loading
               return CircularProgressIndicator();
             },
       ),
@@ -166,6 +200,7 @@ class _DownloadPageMinecraftState extends State<DownloadPageMinecraft> {
         final List<MinecraftVersion> versions = rawList
             .map((json) => MinecraftVersion.fromJson(json))
             .toList();
+
         return versions;
       } else {
         throw Exception('Error: ${response.statusMessage}');
